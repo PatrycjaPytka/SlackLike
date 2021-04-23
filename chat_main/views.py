@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .forms import NewGroupForm
 from .models import Groups
 
@@ -10,8 +10,17 @@ def index(request):
     return render(request, 'chat_main/index.html', {
                 'group_names': group_names,
                 'who_ask': who_ask,
-                'find': False,
+                # 'find': False,
                 })
+    
+    if 'term' in request.GET:
+        qs = Groups.objects.filter(name_of_group__istartswith=request.GET.get('term'))
+        names = list()
+        for group in qs:
+            names.append(group.name_of_group)
+        return JsonResponse(names, safe=False)
+    
+    return render(request, 'chat_main/index.html')
 
 
 def room(request, room_name):
@@ -97,34 +106,36 @@ def leave_group(request, group):
                 })
 
 
-def find_group(request):
-    group_names = Groups.objects.all()
-    who_ask = request.user
+# def find_group(request):
+    # group_names = Groups.objects.all()
+    # who_ask = request.user
 
-    if request.method == 'GET':
-        look_for = request.GET.get('find_it')
-        submitbutton = request.GET.get('submit')
+    # if request.method == 'GET':
+    #     look_for = request.GET.get('find_it')
+    #     submitbutton = request.GET.get('submit')
 
-        if look_for is not None:
-            results = Groups.objects.filter(name_of_group__contains=look_for).distinct()
-            return render(request, 'chat_main/index.html', {
-                        'results': results,
-                        'submitbutton': submitbutton,
-                        'group_names': group_names,
-                        'who_ask': who_ask,
-                        'find': True,
-                        })
+    #     if look_for is not None:
+    #         results = Groups.objects.filter(name_of_group__contains=look_for).distinct()
+    #         return render(request, 'chat_main/index.html', {
+    #                     'results': results,
+    #                     'submitbutton': submitbutton,
+    #                     'group_names': group_names,
+    #                     'who_ask': who_ask,
+    #                     'find': True,
+    #                     })
 
-        else:
-            return render(request, 'chat_main/index.html', {
-                        'group_names': group_names,
-                        'who_ask': who_ask,
-                        'find': True,
-                        })
+    #     else:
+    #         return render(request, 'chat_main/index.html', {
+    #                     'group_names': group_names,
+    #                     'who_ask': who_ask,
+    #                     'find': True,
+    #                     })
 
-    else:
-        return render(request, 'chat_main/index.html', {
-                    'group_names': group_names,
-                    'who_ask': who_ask,
-                    'find': True,
-                    })
+    # else:
+    #     return render(request, 'chat_main/index.html', {
+    #                 'group_names': group_names,
+    #                 'who_ask': who_ask,
+    #                 'find': True,
+    #                 })
+
+ 

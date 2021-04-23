@@ -11,5 +11,5 @@ urlpatterns = [
     path('deletegroup/<str:group>/', views.confirm, name='confirm'),
     path('editgroup/<str:room_name>/', views.edit_group, name='edit_group'),
     path('leave_group/<str:group>/', views.leave_group, name='leave_group'),
-    path('find_group/', views.find_group, name='find_group'),
+    # path('find_group/', views.find_group, name='find_group'),
 ]
