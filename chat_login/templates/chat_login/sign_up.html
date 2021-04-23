@@ -1,0 +1,23 @@
+{% extends 'chat_login/base.html' %}
+{% block title %} Sign up {% endblock %}
+
+{% load bootstrap4 %}
+
+{% block content %} 
+    <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 5%">
+        <div class="card-body" style="background-color: CCCC99">
+            <h5 class="card-title">Sign up</h5>
+                <form action="{% url 'chat_login:sign_up' %}" method='POST'>
+                
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+
+                    <a href="{% url 'chat_login:log_in' %}"><button type='submit' class="btn btn-secondary"> Sign up </button></a>
+                    
+                </form>
+                <a href="{% url 'chat_login:log_in' %}">
+                    <button type='submit' class="btn btn-secondary" style="margin-left: 18%; margin-top: -9%;"> Go to login </button>
+                </a>
+        </div>
+    </div>
+{% endblock %}
