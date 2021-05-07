@@ -15,9 +15,21 @@
                     <a href="{% url 'chat_main:delete_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
                         <i class="fas fa-minus-circle"></i> Delete group
                     </a><br>
-                    {% comment %} <a href="{% url 'chat_main:find_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                        <i class="fas fa-search"></i> Find group
-                    </a> {% endcomment %}
+
+                    <form action = "/chat/newgroup/"+userInput>
+                        <label for="group_search"> Search <i class="fas fa-search"></i></label>
+                        <input type="search" name="Search" id="group_search">
+                    </form>
+                    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                    <script>
+                        $( function() {
+                            $( "#group_search" ).autocomplete({
+                                source: '{% url 'chat_main:index' %}'
+                            });
+                        });
+                    </script> 
+
                     <a style = "text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
                         <i class="fas fa-users"></i> Groups: 
                     </a>
@@ -26,28 +38,8 @@
                             <br> 
                             <a href="{% url 'chat_main:room' group %}"> {{group}} </a>
                         {% endfor %}
-                    
-                    <form>
-                        <label for="group_search"> Search <i class="fas fa-search"></i></label>
-                        <input type="text" name="Search" id="group_search">
-                    </form>
-                    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-                    <script>
-                                $(function() {
-                                    $ ("#group_search").autocomplete({
-                                        source: '{% url 'chat_main:index' %}',
-                                        minLength: 1,
-                                    });
-                                } );
-                            </script>
-                            
                     {% endif %}
                 {% else %}
-                    {% comment %} <a href="{% url 'chat_main:find_group' %}" style = "text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                        <i class="fas fa-search"></i> Find group
-                    </a> {% endcomment %}
-                    <br>
                     <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
                         <i class="fas fa-users"></i> Groups: 
                     </a>
@@ -63,27 +55,7 @@
                 {% endif %}
             </div>
         </div>
-        {% comment %} {% if find == True %} {% endcomment %}
             <br>
-            <div class="card" style="width: 30rem; margin-left: 35%; margin-top: 10%">
-                        <div class="card-body" style="background-color: CCCC99; text-align: left">
-                            <p><strong> Search <i class="fas fa-search"></i></strong></p>
-
-                            {% comment %} <form action="{% url 'chat_main:find_group' %}" method="GET" value="{{request.GET.q}}">
-                                <input type="text" size="40" name="find_it" value="{{request.GET.q}}" placeholder="Find group"/>
-                                <input type="submit" name="submit" value="Search" class="btn btn-secondary" style="margin-left: 2%;"/>
-                            </form> {% endcomment %}
-    
-            {% comment %} {% if submitbutton == 'Search' and request.GET.find_it != '' %}
-                {% if results %}
-                    {% for result in results %}
-                        <a href="{% url 'chat_main:room' result.name_of_group %}" class="a"> {{result.name_of_group}} </a>
-                    {% endfor %}
-                {% else %}
-                    <h5> None </h5>
-                {% endif %}
-            {% endif %} {% endcomment %}
-        {% comment %} {% endif %} {% endcomment %}
     {% else %}
         <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
             <div class="card-body" style="background-color: CCCC99; text-align: center">

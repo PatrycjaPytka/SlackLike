@@ -5,22 +5,20 @@ from .models import Groups
 
 
 def index(request):
-    group_names = Groups.objects.all()
-    who_ask = request.user
-    return render(request, 'chat_main/index.html', {
-                'group_names': group_names,
-                'who_ask': who_ask,
-                # 'find': False,
-                })
-    
     if 'term' in request.GET:
-        qs = Groups.objects.filter(name_of_group__istartswith=request.GET.get('term'))
+        qs = Groups.objects.filter(name_of_group__icontains=request.GET.get('term'))
         names = list()
         for group in qs:
             names.append(group.name_of_group)
+            print(names)
         return JsonResponse(names, safe=False)
-    
-    return render(request, 'chat_main/index.html')
+
+    group_names = Groups.objects.all()
+    who_ask = request.user
+    return  render(request, 'chat_main/index.html', {
+                'group_names': group_names,
+                'who_ask': who_ask,
+                })
 
 
 def room(request, room_name):
@@ -107,35 +105,13 @@ def leave_group(request, group):
 
 
 # def find_group(request):
-    # group_names = Groups.objects.all()
-    # who_ask = request.user
+#     if request.method == 'GET':
+#         search_text = request.GET['search_text']
+#         print(search_text)
+#         if search_text is not None and search_text != u"":
+#             search_text = request.GET['search_text']
+#             statuss = Groups.objects.filter(name_of_group__contains = search_text)
 
-    # if request.method == 'GET':
-    #     look_for = request.GET.get('find_it')
-    #     submitbutton = request.GET.get('submit')
-
-    #     if look_for is not None:
-    #         results = Groups.objects.filter(name_of_group__contains=look_for).distinct()
-    #         return render(request, 'chat_main/index.html', {
-    #                     'results': results,
-    #                     'submitbutton': submitbutton,
-    #                     'group_names': group_names,
-    #                     'who_ask': who_ask,
-    #                     'find': True,
-    #                     })
-
-    #     else:
-    #         return render(request, 'chat_main/index.html', {
-    #                     'group_names': group_names,
-    #                     'who_ask': who_ask,
-    #                     'find': True,
-    #                     })
-
-    # else:
-    #     return render(request, 'chat_main/index.html', {
-    #                 'group_names': group_names,
-    #                 'who_ask': who_ask,
-    #                 'find': True,
-    #                 })
-
- 
+#         else:
+#             statuss = []
+#         return JsonResponse (data = {'statuss':statuss})
