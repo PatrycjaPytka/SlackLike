@@ -1,0 +1,106 @@
+body {
+    overflow-x: hidden;
+}
+
+.card-body {
+    background-color: lightblue;
+}
+
+.container-fluid {
+    height: 100%;
+    width: 15rem;
+}
+
+.nav {
+    width: 50rem;
+    flex-direction: row;
+}
+
+.flex-column {
+    width: 10rem;
+}
+
+.left-nav {
+    width: 10rem;
+}
+
+.nav-item {
+    width: 10rem;
+    text-decoration: None;
+    font-size: 16px;
+    display: block;
+    color: black;
+    text-shadow: 0.5px 0.5px grey;
+    transition: .2;
+    padding: 8px 8px 8px 32px;
+    
+}
+
+.nav-item:hover{
+    color: grey;
+}
+
+h5 {
+    text-decoration: None;
+    font-size: 20px;
+    color: black;
+    text-shadow: 0.5px 0.5px white;
+    transition: .2;
+    padding: 8px 8px 8px 32px;
+}
+
+.chat_box {
+    align-self: center;
+    text-align: center;
+}
+
+.delete_a {
+    text-decoration: None;
+    font-size: 18px;
+    font:bold;
+    display: block;
+    color: black;
+    transition: .2;
+    padding: 8px 8px 8px 32px;
+}
+
+.delete_a:hover{
+    color: white;
+    text-shadow: 0.5px 0.5px black;
+}
+
+.a_names {
+    text-decoration: None;
+    font-size: 15px!important;
+    display: block;
+    color: black;
+    text-shadow: 0.5px 0.5px grey;
+    transition: .2;
+    padding: 8px 8px 8px 32px;
+    text-align: right!important;
+}
+
+.a_names_action {
+    text-decoration: None;
+    font-size: 16px!important;
+    display: block;
+    color: black;
+    text-shadow: 0.5px 0.5px grey;
+    transition: .2;
+    padding: 8px 8px 8px 32px;
+    text-align: right!important;
+}
+
+
+.a_names_action:hover {
+    color: grey;
+} 
+
+.chat_box {
+    margin-top: -10%;
+    margin-left: 10%;
+}
+
+.rightnav {
+    margin-top: -40%;
+}

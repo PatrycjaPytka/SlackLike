@@ -1,61 +1,23 @@
-{% extends 'chat_login/base.html' %}
+{% extends 'chat_main/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
 
 {% block title %} Chat Rooms {% endblock %}
 
 {% block content %}
-
     {% if user.is_authenticated %}
-        </br>
-        <div class="chat_bgrd">
-            <div class="sidenav">
-                {% if user.is_staff %}
-                    <a href="{% url 'chat_main:new_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                        <i class="fas fa-plus-circle"></i> Create new group 
-                    </a>
-                    <a href="{% url 'chat_main:delete_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                        <i class="fas fa-minus-circle"></i> Delete group
-                    </a><br>
-
-                    <form action = "/chat/newgroup/"+userInput>
-                        <label for="group_search"> Search <i class="fas fa-search"></i></label>
-                        <input type="search" name="Search" id="group_search">
-                    </form>
-                    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-                    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-                    <script>
-                        $( function() {
-                            $( "#group_search" ).autocomplete({
-                                source: '{% url 'chat_main:index' %}'
-                            });
-                        });
-                    </script> 
-
-                    <a style = "text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
-                        <i class="fas fa-users"></i> Groups: 
-                    </a>
-                    {% if group_names %}
-                        {% for group in group_names %}
-                            <br> 
-                            <a href="{% url 'chat_main:room' group %}"> {{group}} </a>
-                        {% endfor %}
-                    {% endif %}
-                {% else %}
-                    <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
-                        <i class="fas fa-users"></i> Groups: 
-                    </a>
-                    {% if group_names %}
-                        {% for group in group_names %} 
-                            {% if who_ask in group.members.all %}
-                                <br>
-                                    <a href="{% url 'chat_main:room' group %}"> {{group}} </a>
-                                </br>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endif %}
+        <div class="container-fluid">
+            <div class ='row justify-content-center' style="text-align:center">
+                <div class="col-6">
+                    <form action = "{% url 'chat_main:find_group' %}" method='GET'>
+                        {% csrf_token %}
+                        {% bootstrap_form form %}
+                        <button class='btn btn-outline-secondary'> Search <i class="fas fa-search"></i></button>
+                    </form>   
+                </div>
             </div>
-        </div>
-            <br>
+        </div>  
+
     {% else %}
         <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
             <div class="card-body" style="background-color: CCCC99; text-align: center">
@@ -70,4 +32,17 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $( function () {
+            $("#group_search").autocomplete({
+                source: '{% url 'chat_main:index' %}'
+                                    
+            });
+        });
+    </script> 
 {% endblock %}

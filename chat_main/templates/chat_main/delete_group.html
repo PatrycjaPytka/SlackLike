@@ -1,23 +1,27 @@
-{% extends 'chat_login/base.html' %}
+{% extends 'chat_main/base.html' %}
 {% block title %} DeleteGroup {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
-        <div class="card" style="width: 40rem; margin-left: 30%; margin-top: 2%">
-            <div class="card-body" style="background-color: CCCC99">
-                <h5 class="card-title"> Choose group to delete: </h5>
-                {% if groups %}
-                    {% for group in groups %} 
-                        <ul>
-                            <li>
-                                <a href="{% url 'chat_main:confirm' group %}" class="delete_a"> {{group}} </a>
-                            </li>
-                        </ul>
-                    {% endfor %}
-                {% endif %}
-                <a href="{% url 'chat_main:index' %}">
-                    <button class="btn btn-secondary" style="margin-left: 80%"><i class="fas fa-undo"></i> Back </button>
-                </a>
+        <div class="container-fluid">
+            <div class ='row justify-content-center'>
+                <div class="card" style="width: 40rem">
+                    <div class="card-body" style="background-color: CCCC99">
+                        <h5 class="card-title"> Choose group to delete: </h5>
+                        {% if groups %}
+                            {% for group in groups %} 
+                                <ul>
+                                    <li>
+                                        <a href="{% url 'chat_main:confirm' group %}" class="delete_a"> {{group}} </a>
+                                    </li>
+                                </ul>
+                            {% endfor %}
+                        {% endif %}
+                        <a href="{% url 'chat_main:index' %}">
+                            <button class="btn btn-secondary" style="margin-left: 80%"><i class="fas fa-undo"></i> Back </button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     {% else %}

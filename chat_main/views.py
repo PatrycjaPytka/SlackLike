@@ -1,23 +1,19 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
-from .forms import NewGroupForm
+
+from .forms import NewGroupForm, FindGroupform
 from .models import Groups
 
 
 def index(request):
-    if 'term' in request.GET:
-        qs = Groups.objects.filter(name_of_group__icontains=request.GET.get('term'))
-        names = list()
-        for group in qs:
-            names.append(group.name_of_group)
-            print(names)
-        return JsonResponse(names, safe=False)
-
     group_names = Groups.objects.all()
     who_ask = request.user
+    form = FindGroupform()
+
     return  render(request, 'chat_main/index.html', {
                 'group_names': group_names,
                 'who_ask': who_ask,
+                'form': form,
                 })
 
 
@@ -104,14 +100,16 @@ def leave_group(request, group):
                 })
 
 
-# def find_group(request):
-#     if request.method == 'GET':
-#         search_text = request.GET['search_text']
-#         print(search_text)
-#         if search_text is not None and search_text != u"":
-#             search_text = request.GET['search_text']
-#             statuss = Groups.objects.filter(name_of_group__contains = search_text)
+def find_group(request):
+    if request.method == 'GET':
+        try:
+            group = Groups.objects.get(name_of_group=request.GET['name_of_group'])
 
-#         else:
-#             statuss = []
-#         return JsonResponse (data = {'statuss':statuss})
+            return redirect('chat_main:room', group)
+
+        except Groups.DoesNotExist:
+            
+            return HttpResponse('Group does not exist')
+
+        else:
+            return HttpResponse('Something went wrong')

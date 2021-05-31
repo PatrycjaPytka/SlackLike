@@ -6,4 +6,7 @@ class NewGroupForm(forms.ModelForm):
         model = Groups
         fields = ['name_of_group', 'members']
 
-
+class FindGroupform(forms.ModelForm):
+    class Meta:
+        model = Groups
+        fields = ['name_of_group']

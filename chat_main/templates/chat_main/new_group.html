@@ -1,35 +1,40 @@
-{% extends 'chat_login/base.html' %}
+{% extends 'chat_main/base.html' %}
 {% load bootstrap4 %}
 
 {% block title %} CreateGroup {% endblock %}
 
 {% block content %}
     {% if user.is_authenticated %}
-        <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
-            <div class="card-body" style="background-color: CCCC99">
-                {% if new == True %}    
-                    <h5 class="card-title"> Create new group </h5>
-                {% else %}
-                    <h5 class="card-title"> Edit group </h5>
-                    {% endif %}
-                <form method='POST'> 
-                    {% csrf_token %}
-                    {% bootstrap_form form_group %}
-                    {% if new == True %}
-                        <button type="submit" class="btn btn-secondary"> Create </button>
-                    {% else %}
-                        <button type="submit" class="btn btn-secondary">
-                            <i class="fas fa-edit"></i> Edit 
-                        </button>
-                    {% endif %}
-                </form>
-                <a href="{% url 'chat_main:index' %}">
-                    <button class="btn btn-secondary" style="margin-left: 15%; margin-top: -9%;">
-                        <i class="fas fa-undo"></i> Back 
-                    </button>
-                </a>
+        <div class="container-fluid">
+            <div class ='row justify-content-center' style="text-align:center">
+                <div class="card" style="width: 40rem;">
+                    <div class="card-body">
+                        {% if new == True %}    
+                            <h5 class="card-title"> Create new group </h5>
+                        {% else %}
+                            <h5 class="card-title"> Edit group </h5>
+                            {% endif %}
+                        <form method='POST'> 
+                            {% csrf_token %}
+                            {% bootstrap_form form_group %}
+                            {% if new == True %}
+                                <button type="submit" class="btn btn-secondary"> Create </button>
+                            {% else %}
+                                <button type="submit" class="btn btn-secondary">
+                                    <i class="fas fa-edit"></i> Edit 
+                                </button>
+                            {% endif %}
+                        </form>
+                        <a href="{% url 'chat_main:index' %}">
+                            <button class="btn btn-secondary" style="margin-left: 30%; margin-top: -9%;">
+                                <i class="fas fa-undo"></i> Back 
+                            </button>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
+    </div>
     {% else %}
      <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
             <div class="card-body" style="background-color: CCCC99; text-align: center">

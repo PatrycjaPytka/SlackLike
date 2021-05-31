@@ -1,109 +1,55 @@
-{% extends 'chat_login/base.html' %}
+{% extends 'chat_main/base.html' %}
+{% load bootstrap4 %}
+{% load static %}
+
 {% block title %} Chat Room {% endblock %}
 
 {% block content %} 
-
     {% if user.is_authenticated %}
-        </br>
-        <div class="sidenav">
-            {% if user.is_staff %}
-                <a href="{% url 'chat_main:new_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                    <i class="fas fa-plus-circle"></i> Create new group 
-                </a>
-                <a href="{% url 'chat_main:edit_group' room_name %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                    <i class="fas fa-edit"></i> Edit group 
-                </a>
-                <a href="{% url 'chat_main:delete_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                    <i class="fas fa-minus-circle"></i> Delete group
-                </a> <br>
-                <br>
-                <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
-                    <i class="fas fa-users"></i> Groups: 
-                </a>
-                {% if group_names %}
-                    {% for group in group_names %} 
-                        <br>
-                        <a href="{% url 'chat_main:room' group %}"> {{group}} </a>
-                    {% endfor %}
-                {% endif %}
-            {% else %}
-                <br>
-                <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
-                    <i class="fas fa-users"></i> Groups: 
-                </a>
-                {% if group_names %}
-                    {% for group in group_names %} 
-                        {% if who_ask in group.members.all %}
-                            <br>
-                                <a href="{% url 'chat_main:room' group %}"> {{group}} </a>
-                            </br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            {% endif %}
-        </div>
-        <div class="chat_bgrd">
-            <div class="chat_box">
-                <h5> {{room_name}} </h5>
-                <textarea id="chat-log" cols="118" rows="25" style="background-color: CCCC99;"></textarea>
-                <br>
-                <input id="chat-message-input" type="text" size="105">
-                <input id="chat-message-submit" type="button" value="Send" class="btn btn-secondary">
-                {{ room_name|json_script:"room-name" }}
-                <script>
-                    const roomName = JSON.parse(document.getElementById('room-name').textContent);
-
-                    const chatSocket = new WebSocket(
-                        'ws://'
-                        + window.location.host
-                        + '/ws/chat/newgroup/'
-                        + roomName
-                        + '/'
-                    );
-
-                    chatSocket.onmessage = function(e) {
-                        const data = JSON.parse(e.data);
-                        document.querySelector('#chat-log').value += (data.message + '\n');
-                    };
-
-                    chatSocket.onclose = function(e) {
-                        console.error('Chat socket closed unexpectedly');
-                    };
-
-                    document.querySelector('#chat-message-input').focus();
-                    document.querySelector('#chat-message-input').onkeyup = function(e) {
-                        if (e.keyCode === 13) {  // enter, return
-                            document.querySelector('#chat-message-submit').click();
-                        }
-                    };
-
-                    document.querySelector('#chat-message-submit').onclick = function(e) {
-                        const messageInputDom = document.querySelector('#chat-message-input');
-                        const message = messageInputDom.value;
-                        chatSocket.send(JSON.stringify({
-                            'message': message,
-                        }));
-                        messageInputDom.value = '';
-                    };
-                </script>
+    <div class='container-fluid'>
+        <div class="row justify-content-end">
+            <div class='col-md-9'>
+                <div class='chat_box'>
+                    <div class="row justify-content-center">
+                        <h5> {{room_name}} </h5>
+                    </div>
+                    <div class="row justify-content-center">
+                        <textarea id="chat-log" style='width: 35rem; height: 30rem;'></textarea>
+                    </div>
+                    <div class="row justify-content-center">
+                        <input id="chat-message-input" type="text" style='width: 31rem'>
+                        <input id="chat-message-submit" type="button" value="Send" class="btn btn-secondary">
+                        {{ room_name|json_script:"room-name" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class='col-md-3'>
+                <nav class="rightnav flex-column">
+                        <div class="row justify-content-right">
+                            <li class="nav-item">
+                                <a class="a_names"> 
+                                    <i class="fas fa-users"></i> Members: 
+                                </a>
+                            </li>
+                            {% if users %}
+                                {% for name in users.members.all %}
+                                <li class="nav-item">
+                                    <a class="a_names"> {{name}} </a>
+                                </li>
+                                {% endfor %}
+                            {% endif %}
+                            <li class="nav-item">
+                            <a class="a_names_action" href="{% url 'chat_main:leave_group' room_name %}">
+                                <i class="fas fa-arrow-circle-left"></i> Leave group 
+                            </a>
+                            </li>
+                        </div>
+                </nav>
             </div>
         </div>
-        <div class="rightnav">
-            <br>
-            <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
-                <i class="fas fa-users"></i> Members: 
-            </a>
-            {% if users %}
-                {% for name in users.members.all %}
-                    <br>
-                    <a class="rightnav_a"> {{name}} </a>
-                {% endfor %}
-            {% endif %}
-            <br>
-            <a href="{% url 'chat_main:leave_group' room_name %}" style = "text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
-                <i class="fas fa-arrow-circle-left"></i> Leave group 
-            </a>
-        </div>
+    </div>
+
     {% else %}
         <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
             <div class="card-body" style="background-color: CCCC99; text-align: center">
@@ -114,4 +60,42 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/newgroup/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                }));
+                messageInputDom.value = '';
+            };
+    </script>
 {% endblock %}

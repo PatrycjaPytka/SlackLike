@@ -1,0 +1,53 @@
+{% load bootstrap4 %}
+{% load static %}
+
+{% block content %} 
+        <ul class="nav flex-column">
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a href="{% url 'chat_main:new_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
+                    <i class="fas fa-plus-circle"></i> Create new group 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'chat_main:edit_group' room_name %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
+                    <i class="fas fa-edit"></i> Edit group 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'chat_main:delete_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
+                    <i class="fas fa-minus-circle"></i> Delete group
+                </a>
+            </li>
+            <li class="nav-item">
+                <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
+                    <i class="fas fa-users"></i> Groups: 
+                </a>
+            </li>
+                {% if group_names %}
+                    {% for group in group_names %} 
+                        <br>
+                        <a href="{% url 'chat_main:room' group %}"> {{ group }} </a>
+                    {% endfor %}
+                {% endif %}
+            {% else %}
+                <br>
+                <li class="nav-item">
+                    <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
+                        <i class="fas fa-users"></i> Groups: 
+                    </a>
+                </li>
+                {% if group_names %}
+                    {% for group in group_names %} 
+                        {% if who_ask in group.members.all %}
+                            <br>
+                            <li class="nav-item">
+                                <a href="{% url 'chat_main:room' group %}"> {{ group }} </a>
+                            </li>
+                            </br>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </ul>
+{% endblock %}

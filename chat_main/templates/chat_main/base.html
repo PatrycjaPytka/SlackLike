@@ -1,0 +1,96 @@
+{% load static %}
+{% load bootstrap4 %}
+
+<html>
+    <head>
+        <title>
+            {% block title %} {% endblock %}
+        </title>
+
+        <link href="{% static 'style.css' %}" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    </head>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                    {% if user.is_authenticated %}
+                        <a class="navbar-brand" href="{% url 'chat_main:index' %}"> Home </a> 
+                        <a class="nav-link active" href="{% url 'chat_login:log_out' %}"> Log out </a> 
+                        
+                    {% else %}
+                        <a class="navbar-brand" href="{% url 'chat_main:index' %}"> Home </a> 
+                        <a class="nav-link active" href="{% url 'chat_login:log_in' %}"> Log in </a> 
+                        <a class="nav-link active" href="{% url 'chat_login:sign_up' %}"> Sign up </a>
+                    {% endif %}
+            </div>
+        </nav>
+        
+        <div class="flex-column">
+            <div class="left-nav">
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a href="{% url 'chat_main:new_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
+                                <i class="fas fa-plus-circle"></i> Create new group 
+                            </a>
+                        </li>
+
+                        {% if room_name %}
+                            <li class="nav-item">
+                                <a href="{% url 'chat_main:edit_group' room_name %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
+                                    <i class="fas fa-edit"></i> Edit group 
+                                </a>
+                            </li>
+                        {% endif %}
+
+                        <li class="nav-item">
+                            <a href="{% url 'chat_main:delete_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
+                                <i class="fas fa-minus-circle"></i> Delete group
+                            </a>
+                        </li>
+                        <br>
+                        {% if group_names %}
+                            <li class="nav-item">
+                                <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
+                                    <i class="fas fa-users"></i> Groups: 
+                                </a>
+                            </li>               
+                            {% for group in group_names %} 
+                                {% if who_ask in group.members.all %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'chat_main:room' group %}"> {{ group }} </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+
+                    {% else %}
+                        <li class="nav-item">
+                            <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
+                                <i class="fas fa-users"></i> Groups: 
+                            </a>
+                        </li>
+                        {% if group_names %}
+                            {% for group in group_names %} 
+                                {% if who_ask in group.members.all %}
+                                    <li class="nav-item">
+                                        <a href="{% url 'chat_main:room' group %}"> {{ group }} </a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                </div>
+        </div>   
+
+        {% block content %} 
+
+        {% endblock %}
+
+        {% block scripts %}
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+            <script src="https://kit.fontawesome.com/087106493e.js" crossorigin="anonymous"></script>
+        {% endblock %}
+    </body>
+</html>
