@@ -5,16 +5,15 @@
 {% block title %} Chat Room {% endblock %}
 
 {% block content %} 
-    {% if user.is_authenticated %}
     <div class='container-fluid'>
         <div class="row justify-content-end">
-            <div class='col-md-9'>
+            <div class='col-md-10'>
                 <div class='chat_box'>
                     <div class="row justify-content-center">
-                        <h5> {{room_name}} </h5>
+                        <h5> {{ room_name }} </h5>
                     </div>
                     <div class="row justify-content-center">
-                        <textarea id="chat-log" style='width: 35rem; height: 30rem;'></textarea>
+                        <textarea id="chat-log" class='chat_log'></textarea>
                     </div>
                     <div class="row justify-content-center">
                         <input id="chat-message-input" type="text" style='width: 31rem'>
@@ -24,42 +23,42 @@
                 </div>
             </div>
     
-            <div class='col-md-3'>
-                <nav class="rightnav flex-column">
-                        <div class="row justify-content-right">
+            <div class='right-nav col-md-2'>
+                <nav class="flex-column">
+                    <div class="row justify-content-right">
+                        <li class="nav-item">
+                            <a class="a_members"> 
+                                <i class="fas fa-users"></i> Members: 
+                            </a>
+                        </li>
+                        {% if users %}
+                            {% for name in users.members.all %}
                             <li class="nav-item">
-                                <a class="a_names"> 
-                                    <i class="fas fa-users"></i> Members: 
-                                </a>
+                                <a class="a_names" href="{% url 'chat_main:user_message' name %}"> {{ name }} <i class="far fa-comments"></i></a>
                             </li>
-                            {% if users %}
-                                {% for name in users.members.all %}
-                                <li class="nav-item">
-                                    <a class="a_names"> {{name}} </a>
-                                </li>
-                                {% endfor %}
-                            {% endif %}
-                            <li class="nav-item">
+                            {% endfor %}
+                        {% endif %}
+                        <li class="nav-item">
                             <a class="a_names_action" href="{% url 'chat_main:leave_group' room_name %}">
                                 <i class="fas fa-arrow-circle-left"></i> Leave group 
                             </a>
-                            </li>
-                        </div>
+                        </li>
+                    </div>
                 </nav>
             </div>
         </div>
     </div>
+{% endblock %}
 
-    {% else %}
-        <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
-            <div class="card-body" style="background-color: CCCC99; text-align: center">
-                <p><strong> You have no access to this site... </strong></p>
-                <p> Please, log in or register </p>
-                <a href="{% url 'chat_login:log_in' %}"><button class="btn btn-secondary"> Log in </button></a>
-                <a href="{% url 'chat_login:sign_up' %}"><button class="btn btn-secondary"> Sign up </button></a>
-            </div>
+{%block content_unlogged %}
+    <div class="card col-md-9">
+        <div class="card-body">
+            <p><strong> You have no access to this site... </strong></p>
+            <p> Please, log in or register </p>
+            <a href="{% url 'chat_login:log_in' %}"><button class="btn btn-secondary"> Log in </button></a>
+            <a href="{% url 'chat_login:sign_up' %}"><button class="btn btn-secondary"> Sign up </button></a>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}
 
 {% block scripts %}

@@ -7,20 +7,21 @@
 {% block content %}
     {% if user.is_authenticated %}
         <div class="container-fluid">
-            <div class ='row justify-content-center' style="text-align:center">
-                <div class="col-6">
+            <div class="card col-9">
+                <div class="card-body">
+                    <h5 class="card-title"> Find group: </h5>
                     <form action = "{% url 'chat_main:find_group' %}" method='GET'>
                         {% csrf_token %}
                         {% bootstrap_form form %}
-                        <button class='btn btn-outline-secondary'> Search <i class="fas fa-search"></i></button>
+                        <button class='btn btn-secondary' type="submit"> Search <i class="fas fa-search"></i></button>
                     </form>   
                 </div>
             </div>
         </div>  
 
     {% else %}
-        <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
-            <div class="card-body" style="background-color: CCCC99; text-align: center">
+        <div class="card col-9">
+            <div class="card-body">
                 <p><strong> You have no access to this site... </strong></p>
                 <p> Please, log in or register </p>
                 <a href="{% url 'chat_login:log_in' %}">
@@ -32,6 +33,17 @@
             </div>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block content_unlogged %}
+    <div class="card col-md-9">
+        <div class="card-body">
+            <p><strong> You have no access to this site... </strong></p>
+            <p> Please, log in or register </p>
+            <a href="{% url 'chat_login:log_in' %}"><button class="btn btn-secondary"> Log in </button></a>
+            <a href="{% url 'chat_login:sign_up' %}"><button class="btn btn-secondary"> Sign up </button></a>
+        </div>
+    </div>
 {% endblock %}
 
 {% block scripts %}

@@ -2,40 +2,32 @@
 {% block title %} DeleteGroup {% endblock %}
 
 {% block content %}
-    {% if user.is_authenticated %}
-        <div class="container-fluid">
-            <div class ='row justify-content-center'>
-                <div class="card" style="width: 40rem">
-                    <div class="card-body" style="background-color: CCCC99">
-                        <h5 class="card-title"> Choose group to delete: </h5>
-                        {% if groups %}
-                            {% for group in groups %} 
-                                <ul>
-                                    <li>
-                                        <a href="{% url 'chat_main:confirm' group %}" class="delete_a"> {{group}} </a>
-                                    </li>
-                                </ul>
-                            {% endfor %}
-                        {% endif %}
-                        <a href="{% url 'chat_main:index' %}">
-                            <button class="btn btn-secondary" style="margin-left: 80%"><i class="fas fa-undo"></i> Back </button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="card" style="width: 40rem; margin-left: 35%; margin-top: 10%">
-            <div class="card-body" style="background-color: CCCC99; text-align: center">
-                <p><strong> You have no access to this site... </strong></p>
-                <p> Please, log in or register </p>
-                <a href="{% url 'chat_login:log_in' %}">
-                    <button class="btn btn-secondary"> Log in </button>
-                </a>
-                <a href="{% url 'chat_login:sign_up' %}">
-                    <button class="btn btn-secondary"> Sign up </button>
+    <div class="container-fluid">
+        <div class="card col-9">
+            <div class="card-body">
+                <h5 class="card-title"> Choose group to delete: </h5>
+                {% if groups %}
+                    {% for group in groups %} 
+                        <ul>
+                            <a href="{% url 'chat_main:confirm' group %}" class="delete_a"> {{group}} </a>
+                        </ul>
+                    {% endfor %}
+                {% endif %}
+                <a href="{% url 'chat_main:index' %}">
+                    <button class="btn btn-outline-secondary" style="margin-left: 80%"><i class="fas fa-undo"></i> Back </button>
                 </a>
             </div>
         </div>
-    {% endif %}
+    </div>
+{% endblock %}
+
+{% block content_unlogged %}
+    <div class="card col-md-9">
+        <div class="card-body">
+            <p><strong> You have no access to this site... </strong></p>
+            <p> Please, log in or register </p>
+            <a href="{% url 'chat_login:log_in' %}"><button class="btn btn-secondary"> Log in </button></a>
+            <a href="{% url 'chat_login:sign_up' %}"><button class="btn btn-secondary"> Sign up </button></a>
+        </div>
+    </div>
 {% endblock %}

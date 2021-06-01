@@ -3,17 +3,17 @@
 
 {% load bootstrap4 %}
 
-{% block content %} 
-     <div class="card" style="width: 26rem; margin-left: 35%; margin-top: 10%">
-        <div class="card-body" style="background-color: CCCC99">
-            <h5 class="card-title">Log in</h5>
+{% block content_unlogged %} 
+    <div class="card col-md-5">
+        <div class="card-body">
+            <h5 class="card-title"> Log in </h5>
                 <form action="{% url 'chat_login:log_in' %}" method='POST'>
                     {% csrf_token %}
                     {% bootstrap_form form %}
                     <button type="submit" class="btn btn-secondary"> Log in </button> 
                 </form>
                 <a href="{% url 'chat_login:sign_up' %}">
-                    <button type='submit' class="btn btn-secondary" style="margin-left: 23%; margin-top: -14.5%;"> Go to registration </button>
+                    <button type='submit' class="btn btn-secondary"> Go to registration </button>
                 </a>
         </div>
     </div>

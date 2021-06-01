@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, JsonResponse
 
 from .forms import NewGroupForm, FindGroupform
-from .models import Groups
+from .models import Groups, User
 
 
 def index(request):
@@ -21,6 +21,7 @@ def room(request, room_name):
     group_names = Groups.objects.all()
     users = Groups.objects.get(name_of_group=room_name)
     who_ask = request.user
+
     return render(request, 'chat_main/room.html', {
                 'room_name': room_name,
                 'group_names': group_names,
@@ -48,6 +49,36 @@ def new_group(request):
                 })
 
 
+def user_message(request, name):
+    group_names = Groups.objects.all()
+    user1 = User.objects.get(username=name)
+    user2 = User.objects.get(username=request.user)
+    print(user1, user2)
+    group = Groups.objects.create(name_of_group='{}_chat'.format(user1.username))
+    group.members.set([user1, user2])
+    return render(request, 'chat_main/room.html', {
+                'room_name': group.name_of_group,
+                'group_names': group_names,
+                'users': group,
+                'who_ask': user2,
+                })
+
+def find_group(request):
+    if request.method == 'GET':
+        try:
+            group = Groups.objects.get(name_of_group=request.GET['name_of_group'])
+
+            return redirect('chat_main:room', group)
+
+        except Groups.DoesNotExist:
+            
+            return HttpResponse('Group does not exist')
+
+        else:
+
+            return HttpResponse('Something went wrong')
+
+
 def edit_group(request, room_name):
     group = Groups.objects.get(name_of_group=room_name)
     form_group = NewGroupForm(request.POST or None, instance=group)
@@ -66,7 +97,7 @@ def edit_group(request, room_name):
 
 
 def delete_group(request):
-    groups = Groups.objects.all()
+    groups = Groups.objects.filter(members=request.user)
     return render(request, 'chat_main/delete_group.html', {
                 'groups': groups,
                 })
@@ -100,16 +131,3 @@ def leave_group(request, group):
                 })
 
 
-def find_group(request):
-    if request.method == 'GET':
-        try:
-            group = Groups.objects.get(name_of_group=request.GET['name_of_group'])
-
-            return redirect('chat_main:room', group)
-
-        except Groups.DoesNotExist:
-            
-            return HttpResponse('Group does not exist')
-
-        else:
-            return HttpResponse('Something went wrong')

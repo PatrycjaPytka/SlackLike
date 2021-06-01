@@ -1,5 +1,7 @@
 from django import forms
+
 from .models import Groups
+
 
 class NewGroupForm(forms.ModelForm):
     class Meta:

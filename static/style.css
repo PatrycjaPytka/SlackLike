@@ -2,6 +2,13 @@ body {
     overflow-x: hidden;
 }
 
+.card {
+    width: 40rem;
+    margin-top: 5rem;
+    text-align: center;
+    align-self: center;
+}
+
 .card-body {
     background-color: lightblue;
 }
@@ -11,21 +18,27 @@ body {
     width: 15rem;
 }
 
-.nav {
-    width: 50rem;
-    flex-direction: row;
+.left-nav {
+    height: 50rem;
+    background-color: lightblue;
+}
+
+.right-nav {
+    height: 50rem;
+    background-color: lightblue;
+}
+
+.chat_log {
+    width: 35rem; 
+    height: 30rem;
 }
 
 .flex-column {
     width: 10rem;
 }
 
-.left-nav {
-    width: 10rem;
-}
-
 .nav-item {
-    width: 10rem;
+    width: 15rem;
     text-decoration: None;
     font-size: 16px;
     display: block;
@@ -36,8 +49,16 @@ body {
     
 }
 
-.nav-item:hover{
-    color: grey;
+.nav-item a {
+    text-decoration: None;
+    font-size: 18px;
+    color: black;
+    text-shadow: 0.5px 0.5px grey;
+}
+
+.nav-item a:hover {
+    color: #585858;
+    text-shadow: 0.5px 0.5px black;
 }
 
 h5 {
@@ -65,42 +86,33 @@ h5 {
 }
 
 .delete_a:hover{
-    color: white;
+    color: #585858;
     text-shadow: 0.5px 0.5px black;
 }
 
 .a_names {
     text-decoration: None;
     font-size: 15px!important;
-    display: block;
     color: black;
     text-shadow: 0.5px 0.5px grey;
     transition: .2;
     padding: 8px 8px 8px 32px;
     text-align: right!important;
+}
+
+.a_names:hover {
+    text-shadow: none!important;
 }
 
 .a_names_action {
-    text-decoration: None;
+    text-decoration: underline;
     font-size: 16px!important;
-    display: block;
     color: black;
     text-shadow: 0.5px 0.5px grey;
     transition: .2;
-    padding: 8px 8px 8px 32px;
-    text-align: right!important;
 }
-
 
 .a_names_action:hover {
-    color: grey;
+    color: #585858;
+    text-shadow: 0.5px 0.5px black;
 } 
-
-.chat_box {
-    margin-top: -10%;
-    margin-left: 10%;
-}
-
-.rightnav {
-    margin-top: -40%;
-}

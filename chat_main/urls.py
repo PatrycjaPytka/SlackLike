@@ -6,6 +6,7 @@ app_name='chat_main'
 urlpatterns = [
     path('', views.index, name='index'),
     path('newgroup/<str:room_name>/', views.room, name='room'),
+    path('<str:name>/', views.user_message, name='user_message'),
     path('newgroup/', views.new_group, name='new_group'),
     path('deletegroup/', views.delete_group, name='delete_group'),
     path('deletegroup/<str:group>/', views.confirm, name='confirm'),

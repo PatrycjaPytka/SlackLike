@@ -27,9 +27,9 @@
             </div>
         </nav>
         
-        <div class="flex-column">
-            <div class="left-nav">
-                    {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
+            <div class="row">
+                <div class="left-nav col-md-2">
                         <li class="nav-item">
                             <a href="{% url 'chat_main:new_group' %}" style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 14px;">
                                 <i class="fas fa-plus-circle"></i> Create new group 
@@ -59,34 +59,30 @@
                             {% for group in group_names %} 
                                 {% if who_ask in group.members.all %}
                                     <li class="nav-item">
-                                        <a href="{% url 'chat_main:room' group %}"> {{ group }} </a>
+                                        <a style='nav_a' href="{% url 'chat_main:room' group %}"> {{ group }} </a>
                                     </li>
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-
-                    {% else %}
-                        <li class="nav-item">
-                            <a style="text-decoration: None; color: black; text-shadow:None; font:bold; font-size: 18px; text-decoration: underline;">
-                                <i class="fas fa-users"></i> Groups: 
-                            </a>
-                        </li>
-                        {% if group_names %}
-                            {% for group in group_names %} 
-                                {% if who_ask in group.members.all %}
-                                    <li class="nav-item">
-                                        <a href="{% url 'chat_main:room' group %}"> {{ group }} </a>
-                                    </li>
-                                {% endif %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endif %}
                 </div>
-        </div>   
+            <div class='col-md-10 justify-content-center'>   
 
-        {% block content %} 
+            {% block content %} 
 
-        {% endblock %}
+            {% endblock %}
+            </div>
+        </div>
+
+        {% else %}
+            <div class="row">
+                <div class="col-md-12 justify-content-center">
+
+                    {% block content_unlogged %} 
+
+                    {% endblock %}
+                </div>
+            </div>
+        {% endif %}
 
         {% block scripts %}
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
